@@ -1,0 +1,2 @@
+../Core/Src/no_os_crc8.c:57:6:no_os_crc8_populate_msb	5
+../Core/Src/no_os_crc8.c:88:9:no_os_crc8	2
