@@ -1,0 +1,12 @@
+../Core/Src/no_os_pwm.c:57:9:no_os_pwm_init	5
+../Core/Src/no_os_pwm.c:85:9:no_os_pwm_remove	4
+../Core/Src/no_os_pwm.c:104:9:no_os_pwm_enable	4
+../Core/Src/no_os_pwm.c:121:9:no_os_pwm_disable	4
+../Core/Src/no_os_pwm.c:139:9:no_os_pwm_set_period	4
+../Core/Src/no_os_pwm.c:157:9:no_os_pwm_get_period	4
+../Core/Src/no_os_pwm.c:175:9:no_os_pwm_set_duty_cycle	4
+../Core/Src/no_os_pwm.c:193:9:no_os_pwm_get_duty_cycle	4
+../Core/Src/no_os_pwm.c:211:9:no_os_pwm_set_phase	4
+../Core/Src/no_os_pwm.c:229:9:no_os_pwm_get_phase	4
+../Core/Src/no_os_pwm.c:249:9:no_os_pwm_set_polarity	4
+../Core/Src/no_os_pwm.c:269:9:no_os_pwm_get_polarity	4

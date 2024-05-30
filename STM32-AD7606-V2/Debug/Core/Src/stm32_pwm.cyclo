@@ -1,0 +1,11 @@
+../Core/Src/stm32_pwm.c:66:17:_compute_period_ticks	1
+../Core/Src/stm32_pwm.c:98:16:stm32_init_timer	17
+../Core/Src/stm32_pwm.c:245:16:stm32_init_pwm	12
+../Core/Src/stm32_pwm.c:341:9:stm32_pwm_init	9
+../Core/Src/stm32_pwm.c:401:9:stm32_pwm_remove	10
+../Core/Src/stm32_pwm.c:447:9:stm32_pwm_enable	6
+../Core/Src/stm32_pwm.c:483:9:stm32_pwm_disable	4
+../Core/Src/stm32_pwm.c:512:9:stm32_pwm_set_period	4
+../Core/Src/stm32_pwm.c:553:9:stm32_pwm_get_period	4
+../Core/Src/stm32_pwm.c:577:9:stm32_pwm_set_duty_cycle	4
+../Core/Src/stm32_pwm.c:611:9:stm32_pwm_get_duty_cycle	1
