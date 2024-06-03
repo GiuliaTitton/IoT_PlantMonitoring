@@ -569,3 +569,7 @@ const struct no_os_spi_platform_ops stm32_spi_ops = {
 	.transfer = &stm32_spi_transfer,
 	.dma_transfer_async = &stm32_spi_dma_transfer_async
 };
+const struct stm32_spi_init_param stm32_spi_init_param = {
+		.chip_select_port = 1,
+		.get_input_clock = HAL_RCC_GetPCLK2Freq,
+};
