@@ -1,3 +1,0 @@
-../Core/Src/no_os_alloc.c:47:29:no_os_malloc	16	static
-../Core/Src/no_os_alloc.c:58:29:no_os_calloc	16	static
-../Core/Src/no_os_alloc.c:70:28:no_os_free	16	static

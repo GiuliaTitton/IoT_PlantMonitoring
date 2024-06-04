@@ -1,3 +1,0 @@
-../Core/Src/stm32_delay.c:50:6:no_os_udelay	3
-../Core/Src/stm32_delay.c:79:6:no_os_mdelay	1
-../Core/Src/stm32_delay.c:88:19:no_os_get_time	1
