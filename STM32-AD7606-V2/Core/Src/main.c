@@ -125,21 +125,21 @@ int main(void)
 	struct stm32_gpio_desc stm32_convst_desc = {
 			.port = GPIOC,
 			.gpio_config = {
-					.Pin = GPIO_PIN_7,
+					.Pin = 7,
 					.Mode = GPIO_MODE_OUTPUT_PP,
 					.Speed = GPIO_SPEED_FREQ_HIGH,
 					.Alternate = 0,
 			}
 	};
 	struct no_os_gpio_init_param gpio_convst = { .port = 2,		// GPIO: PC7
-			.number = GPIO_PIN_7,              // GPIO pin number for CONVST
+			.number = 7,              // GPIO pin number for CONVST
 			.platform_ops = &stm32_gpio_ops, // Platform-specific operations (set to NULL if not needed)
 			.extra = &stm32_convst_desc,             // Extra parameters if needed
 			.extra = &stm32_convst_init_param
 			};
 	struct no_os_gpio_desc gpio_convst_desc = {
 			.port = 2,
-			.number = GPIO_PIN_7,
+			.number = 7,
 			.platform_ops = &stm32_gpio_ops,
 			.extra = &stm32_convst_desc,
 			.extra = &stm32_convst_init_param
@@ -240,7 +240,7 @@ int main(void)
 	};
 	struct no_os_spi_init_param spi_init_param = {
 			.device_id = ID,
-			.max_speed_hz = 10000000,
+			.max_speed_hz = 20000000,
 			.chip_select = &gpio_par_ser.port,   //DA CONTROLLARE
 			.mode = NO_OS_SPI_MODE_0,
 			.bit_order = NO_OS_SPI_BIT_ORDER_MSB_FIRST,
@@ -250,20 +250,20 @@ int main(void)
 	};
 	struct no_os_spibus_desc spibus_desc = {
 			.device_id = ID,
-			.max_speed_hz = 10000000,
+			.max_speed_hz = 20000000,
 			.mode = NO_OS_SPI_MODE_0,
 			.bit_order = NO_OS_SPI_BIT_ORDER_MSB_FIRST,
 			.platform_ops = &stm32_spi_ops,
 	};
 	struct stm32_spi_desc stm32_spi_desc = {
 			.hspi = &hspi3,
-			.input_clock = 10000000,
+			.input_clock = 20000000,
 			.chip_select = &gpio_par_ser_desc,
 	};
 	struct no_os_spi_desc spi_desc = {
 			.bus = &spibus_desc,
 			.device_id = ID,
-			.max_speed_hz = 10000000,
+			.max_speed_hz = 20000000,
 			.chip_select = &gpio_par_ser.port,
 			.mode = NO_OS_SPI_MODE_0,
 			.bit_order = NO_OS_SPI_BIT_ORDER_MSB_FIRST,
@@ -309,6 +309,22 @@ int main(void)
 					ID, .oversampling = ad7606_oversampling, .sw_mode =
 					false, .config = ad7606_config, .digital_diag_enable =
 					ad7606_digital_diag, .range_ch = ad7606_range };
+
+	HAL_GPIO_WritePin(GPIOB, GPIO_PIN_6, (GPIO_PinState)1);  //chip select
+	HAL_Delay(200);
+	HAL_GPIO_WritePin(GPIOC, GPIO_PIN_7, (GPIO_PinState)1); //convst alto
+	HAL_Delay(100);
+
+	HAL_GPIO_WritePin(GPIOB, GPIO_PIN_9, (GPIO_PinState)1);  //reset
+	HAL_Delay(100);
+	HAL_GPIO_WritePin(GPIOB, GPIO_PIN_9, (GPIO_PinState)0); //reset
+	HAL_Delay(200);
+
+	HAL_GPIO_WritePin(GPIOC, GPIO_PIN_7, (GPIO_PinState)0); //convst basso
+	HAL_Delay(100);
+	HAL_GPIO_WritePin(GPIOC, GPIO_PIN_7, (GPIO_PinState)1);  // convst alto
+
+	HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_8);  //read busy
 
 	//initialization of AD7606 device
 	int32_t ret_init = ad7606_init(&dev, &ad7606_init_param);
