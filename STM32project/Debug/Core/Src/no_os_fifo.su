@@ -1,4 +1,0 @@
-../Core/Src/no_os_fifo.c:60:36:fifo_new_element	24	static
-../Core/Src/no_os_fifo.c:83:35:no_os_fifo_get_last	16	static
-../Core/Src/no_os_fifo.c:102:9:no_os_fifo_insert	32	static
-../Core/Src/no_os_fifo.c:129:29:no_os_fifo_remove	24	static

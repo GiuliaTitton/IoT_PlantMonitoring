@@ -1,7 +1,0 @@
-../Core/Src/no_os_clk.c:56:9:no_os_clk_init	7
-../Core/Src/no_os_clk.c:95:9:no_os_clk_remove	5
-../Core/Src/no_os_clk.c:118:9:no_os_clk_enable	4
-../Core/Src/no_os_clk.c:134:9:no_os_clk_disable	4
-../Core/Src/no_os_clk.c:151:9:no_os_clk_recalc_rate	5
-../Core/Src/no_os_clk.c:170:9:no_os_clk_round_rate	5
-../Core/Src/no_os_clk.c:189:9:no_os_clk_set_rate	4

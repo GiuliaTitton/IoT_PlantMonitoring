@@ -1,4 +1,0 @@
-../Core/Src/no_os_eeprom.c:51:9:no_os_eeprom_init	24	static
-../Core/Src/no_os_eeprom.c:76:9:no_os_eeprom_remove	16	static
-../Core/Src/no_os_eeprom.c:95:9:no_os_eeprom_write	32	static
-../Core/Src/no_os_eeprom.c:115:9:no_os_eeprom_read	32	static
