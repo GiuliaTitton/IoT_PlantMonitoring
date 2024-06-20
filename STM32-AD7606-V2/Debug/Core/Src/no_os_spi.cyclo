@@ -1,8 +1,0 @@
-../Core/Src/no_os_spi.c:58:9:no_os_spi_init	8
-../Core/Src/no_os_spi.c:94:9:no_os_spibus_init	2
-../Core/Src/no_os_spi.c:122:9:no_os_spi_remove	5
-../Core/Src/no_os_spi.c:139:6:no_os_spibus_remove	4
-../Core/Src/no_os_spi.c:165:9:no_os_spi_write_and_read	4
-../Core/Src/no_os_spi.c:191:9:no_os_spi_transfer	8
-../Core/Src/no_os_spi.c:230:9:no_os_spi_transfer_dma_sync	6
-../Core/Src/no_os_spi.c:254:9:no_os_spi_transfer_dma_async	6

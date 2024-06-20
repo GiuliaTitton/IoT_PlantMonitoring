@@ -1,5 +1,0 @@
-../Core/Src/stm32_dma.c:60:5:stm32_dma_config_xfer	21
-../Core/Src/stm32_dma.c:154:5:stm32_dma_init	6
-../Core/Src/stm32_dma.c:216:5:stm32_dma_xfer_start	6
-../Core/Src/stm32_dma.c:247:5:stm32_dma_xfer_abort	6
-../Core/Src/stm32_dma.c:274:5:stm32_dma_remove	1

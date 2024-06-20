@@ -1,4 +1,0 @@
-../Core/Src/no_os_mutex.c:47:35:no_os_mutex_init	1
-../Core/Src/no_os_mutex.c:54:35:no_os_mutex_lock	1
-../Core/Src/no_os_mutex.c:61:33:no_os_mutex_unlock	1
-../Core/Src/no_os_mutex.c:68:35:no_os_mutex_remove	1
