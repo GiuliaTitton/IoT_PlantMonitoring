@@ -33,7 +33,8 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
  ../Core/Inc/stm32_gpio.h ../Core/Inc/stm32_hal.h ../Core/Inc/main.h \
  ../Core/Inc/stm32_spi.h ../Core/Inc/no_os_dma.h ../Core/Inc/no_os_list.h \
  ../Core/Inc/no_os_irq.h ../Core/Inc/no_os_mutex.h \
- ../Core/Inc/stm32_pwm.h ../Core/Inc/stm32_gpio.h ../Core/Inc/no_os_spi.h
+ ../Core/Inc/stm32_pwm.h ../Core/Inc/stm32_gpio.h ../Core/Inc/no_os_spi.h \
+ ../Core/Inc/no_os_dma.h ../Core/Inc/stm32_dma.h
 ../Core/Inc/main.h:
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h:
 ../Core/Inc/stm32f4xx_hal_conf.h:
@@ -80,3 +81,5 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
 ../Core/Inc/stm32_pwm.h:
 ../Core/Inc/stm32_gpio.h:
 ../Core/Inc/no_os_spi.h:
+../Core/Inc/no_os_dma.h:
+../Core/Inc/stm32_dma.h:

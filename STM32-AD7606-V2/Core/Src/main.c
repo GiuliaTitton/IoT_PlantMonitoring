@@ -26,6 +26,8 @@
 #include "stm32_spi.h"
 #include "no_os_spi.h"
 #include <string.h>
+#include "no_os_dma.h"
+#include "stm32_dma.h"
 #define ID ID_AD7606_8
 
 /* USER CODE END Includes */
@@ -104,15 +106,23 @@ int main(void)
   MX_SPI3_Init();
   MX_TIM10_Init();
   /* USER CODE BEGIN 2 */
+  // SET PIN CONFIGURATIONS
+  /* AD7606   ->    STM32
+   * BUSY 		 -> PC7
+   * RESET 		 -> PC6
+   * CONVST 	 -> PB15
+   * CHIP_SELECT -> PB14 (SPI CS)
+   * D7_OUT 	 -> PC11  (MISO)  PB13
+   * RD 		 -> PC10 (SPI SCLK)  (prima era pb12)
+   * */
 	//------------------------ GPIO INITIALIZATION --------------------------
 	//-------- RESET PIN ----------
-	//struct stm32_gpio_desc *stm32_reset_desc;
-	struct no_os_gpio_init_param gpio_reset = { .port = 1,		// GPIO: PB9
-			.number = GPIO_PIN_9,              // GPIO pin number for RESET
+	struct no_os_gpio_init_param gpio_reset = { .port = 2,		// GPIO: PC7
+			.number = 7,              // GPIO pin number for RESET
 			.platform_ops = &stm32_gpio_ops, // Platform-specific operations (set to NULL if not needed)
 			.extra = NULL             // Extra parameters if needed
 			};
-	struct no_os_gpio_desc gpio_reset_desc = { .port = 1, .number = GPIO_PIN_8,
+	struct no_os_gpio_desc gpio_reset_desc = { .port = 2, .number = 7,
 			.platform_ops = &stm32_gpio_ops, .extra = NULL };
 
 	//---------------------------------- CONVST PIN --------------------------------------------
@@ -122,34 +132,34 @@ int main(void)
 			.speed = GPIO_SPEED_FREQ_HIGH,
 			.alternate = 0
 		};
-	struct stm32_gpio_desc stm32_convst_desc = {
-			.port = GPIOC,
+	struct stm32_gpio_desc stm32_convst_desc = {  //PB15
+			.port = GPIOB,
 			.gpio_config = {
-					.Pin = 7,
+					.Pin = 15,
 					.Mode = GPIO_MODE_OUTPUT_PP,
 					.Speed = GPIO_SPEED_FREQ_HIGH,
 					.Alternate = 0,
 			}
 	};
-	struct no_os_gpio_init_param gpio_convst = { .port = 2,		// GPIO: PC7
-			.number = 7,              // GPIO pin number for CONVST
+	struct no_os_gpio_init_param gpio_convst = { .port = 1,		// GPIO: PB15
+			.number = 15,              // GPIO pin number for CONVST
 			.platform_ops = &stm32_gpio_ops, // Platform-specific operations (set to NULL if not needed)
 			.extra = &stm32_convst_desc,             // Extra parameters if needed
 			.extra = &stm32_convst_init_param
 			};
 	struct no_os_gpio_desc gpio_convst_desc = {
-			.port = 2,
-			.number = 7,
+			.port = 1,
+			.number = 15,
 			.platform_ops = &stm32_gpio_ops,
 			.extra = &stm32_convst_desc,
 			.extra = &stm32_convst_init_param
 	};
 
-	//----------------------------------- BUSY PIN -------------------------------------------------
+	//----------------------------------- BUSY PIN (PC7) -------------------------------------------------
 	struct stm32_gpio_desc stm32_busy_desc = {
-			.port = GPIOA,
+			.port = GPIOC,
 			.gpio_config = {
-					.Pin = GPIO_PIN_8,
+					.Pin = GPIO_PIN_7,
 					.Mode = GPIO_MODE_INPUT,
 					.Speed = GPIO_SPEED_FREQ_HIGH,
 					.Alternate = 0,
@@ -161,15 +171,15 @@ int main(void)
 				.speed = GPIO_SPEED_FREQ_HIGH,
 				.alternate = 0
 			};
-	struct no_os_gpio_init_param gpio_busy = { .port = 0,		// GPIO: PA8
-			.number = GPIO_PIN_8,              // GPIO pin number for BUSY
+	struct no_os_gpio_init_param gpio_busy = { .port = 2,		// GPIO: PC7
+			.number = 7,              // GPIO pin number for BUSY
 			.platform_ops = &stm32_gpio_ops, // Platform-specific operations (set to NULL if not needed)
 			.extra = &stm32_busy_desc,             // Extra parameters if needed
 			.extra = &stm32_busy_init_param
 			};
 	struct no_os_gpio_desc gpio_busy_desc = {
-			.port = 0,
-			.number = GPIO_PIN_8,
+			.port = 2,
+			.number = 7,
 			.platform_ops = &stm32_gpio_ops,
 			.extra = &stm32_busy_desc,
 			.extra = &stm32_busy_init_param
@@ -184,7 +194,8 @@ int main(void)
 			};
 	struct no_os_gpio_desc gpio_stby_n_desc = { .port = 0,
 			.number = GPIO_PIN_12, .platform_ops = &stm32_gpio_ops, .extra = NULL };
-	//------ RANGE PIN -------
+
+	//------ RANGE PIN -> GND -------
 	//struct stm32_gpio_desc *stm32_range_desc;
 	struct no_os_gpio_init_param gpio_range = { .port = 0,	// GPIO: PA10
 			.number = GPIO_PIN_10,              // GPIO pin number for RANGE
@@ -193,7 +204,7 @@ int main(void)
 			};
 	struct no_os_gpio_desc gpio_range_desc = { .port = 0, .number = GPIO_PIN_10,
 			.platform_ops = &stm32_gpio_ops, .extra = NULL };
-	//----- OS0 PIN -----
+	//----- OS0 PIN -> GND -----
 	//struct stm32_gpio_desc *stm32_os0_desc;
 	struct no_os_gpio_init_param gpio_os0 = { .port = 3,		// GPIO: PD2
 			.number = GPIO_PIN_2,              // GPIO pin number for OS0
@@ -202,7 +213,7 @@ int main(void)
 			};
 	struct no_os_gpio_desc gpio_os0_desc = { .port = 3, .number = GPIO_PIN_2,
 			.platform_ops = &stm32_gpio_ops, .extra = NULL };
-	//----OS1 PIN -----
+	//---- OS1 PIN -> GND -----
 	//struct stm32_gpio_desc *stm32_os1_desc;
 	struct no_os_gpio_init_param gpio_os1 = { .port = 1,		// GPIO: PB5
 			.number = GPIO_PIN_5,              // GPIO pin number for OS1
@@ -211,68 +222,91 @@ int main(void)
 			};
 	struct no_os_gpio_desc gpio_os1_desc = { .port = 1, .number = GPIO_PIN_5,
 			.platform_ops = &stm32_gpio_ops, .extra = NULL };
-	//------- OS2 PIN ---
+	//------- OS2 PIN -> GND ---
 	//struct stm32_gpio_desc *stm32_os2_desc;
 	struct no_os_gpio_init_param gpio_os2 = { .port = 0,		// GPIO: PA11
-			.number = GPIO_PIN_11,              // GPIO pin number for OS2
+			.number = 11,              // GPIO pin number for OS2
 			.platform_ops = &stm32_gpio_ops, // Platform-specific operations (set to NULL if not needed)
 			.extra = NULL             // Extra parameters if needed
 			};
-	struct no_os_gpio_desc gpio_os2_desc = { .port = 0, .number = GPIO_PIN_11,
+	struct no_os_gpio_desc gpio_os2_desc = { .port = 0, .number = 11,
 			.platform_ops = &stm32_gpio_ops, .extra = NULL };
-	//--------- PAR_SER PIN ----
+
+	//--------- PAR_SER PIN (PB14) ----
 	//struct stm32_gpio_desc *stm32_par_ser_desc;
-	struct no_os_gpio_init_param gpio_par_ser = { .port = 1,	// GPIO: PB6
-			.number = GPIO_PIN_6,              // GPIO pin number for PARn/SER
+	struct no_os_gpio_init_param gpio_par_ser = { .port = 1,	// GPIO: PB14
+			.number = 14,              // GPIO pin number for PARn/SER
 			.platform_ops = &stm32_gpio_ops, // Platform-specific operations (set to NULL if not needed)
 			.extra = NULL             // Extra parameters if needed
 			};
 	struct no_os_gpio_desc gpio_par_ser_desc =
-			{ .port = 1, .number = GPIO_PIN_6, .platform_ops = &stm32_gpio_ops,
+			{ .port = 1, .number = 14, .platform_ops = &stm32_gpio_ops,
 					.extra = NULL };
-
+	// -------------- DMA INITIALIZATION --------------
+	struct no_os_dma_init_param dma_init = {
+			.id = 123,
+			.num_ch = 8,
+			.platform_ops = &stm32_dma_ops,
+			.sg_handler = NULL
+	};
+	struct no_os_dma_desc dma_desc = {
+			.platform_ops = &stm32_dma_ops
+	};
+	struct no_os_dma_ch dma_rx_ch = {
+			.id = 1,
+	};
+	struct no_os_dma_ch dma_tx_ch ={
+			.id = 2,
+	};
 	// -------------- SPI INITIALIZATION ---------------
 	struct no_os_platform_spi_delays platform_spi_delays = {
-			.cs_delay_first = 60, .cs_delay_last = 1 };
+			.cs_delay_first = 1, .cs_delay_last = 1 };
+
 	struct stm32_spi_init_param stm32_spi_init_param = {
 			.chip_select_port = 1,
 			.get_input_clock = HAL_RCC_GetPCLK2Freq,
+			.dma_init = &dma_init,
+			.rxdma_ch = &dma_rx_ch,
+			.txdma_ch = &dma_tx_ch,
+			.pwm_init = NULL
+	};
+	struct stm32_spi_desc stm32_spi_desc = {
+			.hspi = &hspi3,
+			.input_clock = HAL_RCC_GetPCLK2Freq,
+			.chip_select = &gpio_par_ser_desc,
+	};
+	struct no_os_spibus_desc spibus_desc = {
+			.device_id = ID,
+			.max_speed_hz = HAL_RCC_GetPCLK2Freq,
+			.mode = NO_OS_SPI_MODE_0,
+			.bit_order = NO_OS_SPI_BIT_ORDER_MSB_FIRST,
+			.platform_ops = &stm32_spi_ops,
 	};
 	struct no_os_spi_init_param spi_init_param = {
 			.device_id = ID,
-			.max_speed_hz = 20000000,
+			.max_speed_hz = HAL_RCC_GetPCLK2Freq,
 			.chip_select = &gpio_par_ser.port,   //DA CONTROLLARE
 			.mode = NO_OS_SPI_MODE_0,
 			.bit_order = NO_OS_SPI_BIT_ORDER_MSB_FIRST,
 			.platform_ops =	&stm32_spi_ops,
 			.platform_delays = platform_spi_delays,
-			.extra = &stm32_spi_init_param
+			.extra = &stm32_spi_init_param,
+			.extra = &stm32_spi_desc,
+			.extra = &spibus_desc,
 	};
-	struct no_os_spibus_desc spibus_desc = {
-			.device_id = ID,
-			.max_speed_hz = 20000000,
-			.mode = NO_OS_SPI_MODE_0,
-			.bit_order = NO_OS_SPI_BIT_ORDER_MSB_FIRST,
-			.platform_ops = &stm32_spi_ops,
-	};
-	struct stm32_spi_desc stm32_spi_desc = {
-			.hspi = &hspi3,
-			.input_clock = 20000000,
-			.chip_select = &gpio_par_ser_desc,
-	};
+
 	struct no_os_spi_desc spi_desc = {
 			.bus = &spibus_desc,
 			.device_id = ID,
-			.max_speed_hz = 20000000,
+			.max_speed_hz = HAL_RCC_GetPCLK2Freq,
 			.chip_select = &gpio_par_ser.port,
 			.mode = NO_OS_SPI_MODE_0,
 			.bit_order = NO_OS_SPI_BIT_ORDER_MSB_FIRST,
 			.platform_ops = &stm32_spi_ops,
 			.platform_delays = platform_spi_delays,
 			.extra = &stm32_spi_desc,
-			.extra = &stm32_spi_init_param
+			.extra = &stm32_spi_init_param,
 	};
-
 	//spi_desc->extra = &stm32_spi_desc;
 
 	//------------ DEVICE AD7606 -------------
@@ -287,12 +321,16 @@ int main(void)
 	uint8_t data[28];
 	struct ad7606_dev dev = {
 			.spi_desc = &spi_desc,
-			.gpio_reset = &gpio_reset_desc, .gpio_convst = &gpio_convst_desc, .gpio_busy =
-			&gpio_busy_desc, .gpio_stby_n = &gpio_stby_n_desc, .gpio_range =
-			&gpio_range_desc, .gpio_os0 = &gpio_os0_desc, .gpio_os1 =
-			&gpio_os1_desc, .gpio_os2 = &gpio_os2_desc, .gpio_par_ser =
-			&gpio_par_ser_desc, .device_id = ID, .oversampling =
-			ad7606_oversampling,
+			.gpio_reset = &gpio_reset_desc,
+			.gpio_convst = &gpio_convst_desc,
+			.gpio_busy = &gpio_busy_desc,
+			.gpio_stby_n = &gpio_stby_n_desc,
+			.gpio_range = &gpio_range_desc,
+			.gpio_os0 = &gpio_os0_desc,
+			.gpio_os1 =	&gpio_os1_desc,
+			.gpio_os2 = &gpio_os2_desc,
+			.gpio_par_ser =	&gpio_par_ser_desc,
+			.device_id = ID, .oversampling = ad7606_oversampling,
 			.sw_mode = false, // Whether the device is running in hardware or software mode: false=hardware mode ????
 			.reg_mode = false, // Whether the device is running in register or ADC reading mode: false = ADC reading mode ????
 			.max_dout_lines = AD7606_2_DOUT, .config = ad7606_config,
@@ -302,15 +340,22 @@ int main(void)
 
 	struct ad7606_init_param ad7606_init_param = {
 			.spi_init = spi_init_param,
-			.gpio_reset = &gpio_reset, .gpio_convst = &gpio_convst, .gpio_busy =
-					&gpio_busy, .gpio_stby_n = &gpio_stby_n, .gpio_range =
-					&gpio_range, .gpio_os0 = &gpio_os0, .gpio_os1 = &gpio_os1,
-			.gpio_os2 = &gpio_os2, .gpio_par_ser = &gpio_par_ser, .device_id =
-					ID, .oversampling = ad7606_oversampling, .sw_mode =
-					false, .config = ad7606_config, .digital_diag_enable =
-					ad7606_digital_diag, .range_ch = ad7606_range };
+			.gpio_reset = &gpio_reset,
+			.gpio_convst = &gpio_convst,
+			.gpio_busy = &gpio_busy,
+			.gpio_stby_n = &gpio_stby_n,
+			.gpio_range = &gpio_range,
+			.gpio_os0 = &gpio_os0, .gpio_os1 = &gpio_os1,
+			.gpio_os2 = &gpio_os2,
+			.gpio_par_ser = &gpio_par_ser,
+			.device_id =ID,
+			.oversampling = ad7606_oversampling,
+			.sw_mode = false,
+			.config = ad7606_config,
+			.digital_diag_enable =	ad7606_digital_diag,
+			.range_ch = ad7606_range };
 
-	HAL_GPIO_WritePin(GPIOB, GPIO_PIN_6, (GPIO_PinState)1);  //chip select
+	/*HAL_GPIO_WritePin(GPIOB, GPIO_PIN_6, (GPIO_PinState)1);  //chip select
 	HAL_Delay(200);
 	HAL_GPIO_WritePin(GPIOC, GPIO_PIN_7, (GPIO_PinState)1); //convst alto
 	HAL_Delay(100);
@@ -324,7 +369,7 @@ int main(void)
 	HAL_Delay(100);
 	HAL_GPIO_WritePin(GPIOC, GPIO_PIN_7, (GPIO_PinState)1);  // convst alto
 
-	HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_8);  //read busy
+	HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_8);  //read busy */
 
 	//initialization of AD7606 device
 	int32_t ret_init = ad7606_init(&dev, &ad7606_init_param);
@@ -384,7 +429,7 @@ void SystemClock_Config(void)
   RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
   RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSI;
   RCC_OscInitStruct.PLL.PLLM = 8;
-  RCC_OscInitStruct.PLL.PLLN = 60;
+  RCC_OscInitStruct.PLL.PLLN = 80;
   RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV2;
   RCC_OscInitStruct.PLL.PLLQ = 7;
   if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
@@ -401,7 +446,7 @@ void SystemClock_Config(void)
   RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV2;
   RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;
 
-  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_1) != HAL_OK)
+  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_2) != HAL_OK)
   {
     Error_Handler();
   }
@@ -426,7 +471,7 @@ static void MX_SPI3_Init(void)
   hspi3.Instance = SPI3;
   hspi3.Init.Mode = SPI_MODE_MASTER;
   hspi3.Init.Direction = SPI_DIRECTION_1LINE;
-  hspi3.Init.DataSize = SPI_DATASIZE_8BIT;
+  hspi3.Init.DataSize = SPI_DATASIZE_16BIT;
   hspi3.Init.CLKPolarity = SPI_POLARITY_LOW;
   hspi3.Init.CLKPhase = SPI_PHASE_1EDGE;
   hspi3.Init.NSS = SPI_NSS_SOFT;

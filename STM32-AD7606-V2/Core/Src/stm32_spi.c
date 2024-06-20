@@ -216,7 +216,8 @@ int32_t stm32_spi_init(struct no_os_spi_desc **desc,
 	if (ret)
 		goto error;
 
-	if (sinit->dma_init) {
+	//--------- SCOMMENTAREEEEE!! -------
+	/*if (sinit->dma_init) {
 		ret = no_os_dma_init(&sdesc->dma_desc, sinit->dma_init);
 		if (ret)
 			goto error;
@@ -228,24 +229,24 @@ int32_t stm32_spi_init(struct no_os_spi_desc **desc,
 			sdesc->txdma_ch = sinit->txdma_ch;
 
 		sdesc->dma_desc->sg_handler = sinit->dma_init->sg_handler;
-	}
+	}*/
 
-#ifdef HAL_TIM_MODULE_ENABLED
-	if (sinit->pwm_init) {
-		struct stm32_pwm_desc* spwm_desc;
-		/* Initialize CS PWM */
-		ret = no_os_pwm_init(&sdesc->pwm_desc, sinit->pwm_init);
-		if (ret)
-			goto error;
+//#ifdef HAL_TIM_MODULE_ENABLED
+//	if (sinit->pwm_init) {
+//		struct stm32_pwm_desc* spwm_desc;
+//		/* Initialize CS PWM */
+//		ret = no_os_pwm_init(&sdesc->pwm_desc, sinit->pwm_init);
+//		if (ret)
+//			goto error;
 
-		spwm_desc = sdesc->pwm_desc->extra;
-		ret = no_os_pwm_disable(sdesc->pwm_desc);
-		if (ret)
-			goto error_pwm;
+//		spwm_desc = sdesc->pwm_desc->extra;
+//		ret = no_os_pwm_disable(sdesc->pwm_desc);
+//		if (ret)
+//			goto error_pwm;
 
-		spwm_desc->htimer.Instance->CNT = 0;
-	}
-#endif
+//		spwm_desc->htimer.Instance->CNT = 0;
+//	}
+//#endif
 
 	*desc = spi_desc;
 

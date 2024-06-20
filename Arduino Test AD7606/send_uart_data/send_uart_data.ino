@@ -8,7 +8,7 @@ void loop() {
   // put your main code here, to run repeatedly:
   //compute random floating point number
   int randomNumber = random(0, 100);
-  Serial.print(randomNumber);
+  Serial.println(randomNumber);
 
   delay(2000); //wait for 2 seconds
 }
