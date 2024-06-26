@@ -1,0 +1,7 @@
+../Core/Src/stm32_spi.c:53:12:stm32_spi_config	40	static
+../Core/Src/stm32_spi.c:164:9:stm32_spi_init	72	static
+../Core/Src/stm32_spi.c:270:9:stm32_spi_remove	24	static
+../Core/Src/stm32_spi.c:301:9:stm32_spi_transfer	88	static
+../Core/Src/stm32_spi.c:416:9:stm32_spi_write_and_read	56	static
+../Core/Src/stm32_spi.c:446:9:stm32_config_dma_and_start	64	static
+../Core/Src/stm32_spi.c:553:9:stm32_spi_dma_transfer_async	32	static

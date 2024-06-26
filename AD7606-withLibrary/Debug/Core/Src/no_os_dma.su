@@ -1,0 +1,12 @@
+../Core/Src/no_os_dma.c:53:13:default_sg_callback	40	static
+../Core/Src/no_os_dma.c:96:5:no_os_dma_init	32	static
+../Core/Src/no_os_dma.c:149:5:no_os_dma_remove	24	static
+../Core/Src/no_os_dma.c:185:5:no_os_dma_acquire_channel	24	static
+../Core/Src/no_os_dma.c:217:5:no_os_dma_release_channel	24	static
+../Core/Src/no_os_dma.c:243:5:no_os_dma_config_xfer	48	static
+../Core/Src/no_os_dma.c:320:5:no_os_dma_chan_lock	16	static
+../Core/Src/no_os_dma.c:339:5:no_os_dma_chan_unlock	16	static
+../Core/Src/no_os_dma.c:359:5:no_os_dma_xfer_start	24	static
+../Core/Src/no_os_dma.c:387:5:no_os_dma_xfer_abort	24	static
+../Core/Src/no_os_dma.c:420:6:no_os_dma_is_completed	16	static
+../Core/Src/no_os_dma.c:437:6:no_os_dma_in_progress	24	static

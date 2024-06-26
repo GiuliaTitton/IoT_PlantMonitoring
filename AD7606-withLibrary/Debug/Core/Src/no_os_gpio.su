@@ -1,0 +1,8 @@
+../Core/Src/no_os_gpio.c:55:9:no_os_gpio_get	24	static
+../Core/Src/no_os_gpio.c:81:9:no_os_gpio_get_optional	24	static
+../Core/Src/no_os_gpio.c:110:9:no_os_gpio_remove	16	static
+../Core/Src/no_os_gpio.c:130:9:no_os_gpio_direction_input	16	static
+../Core/Src/no_os_gpio.c:153:9:no_os_gpio_direction_output	16	static
+../Core/Src/no_os_gpio.c:178:9:no_os_gpio_get_direction	16	static
+../Core/Src/no_os_gpio.c:203:9:no_os_gpio_set_value	16	static
+../Core/Src/no_os_gpio.c:227:9:no_os_gpio_get_value	16	static

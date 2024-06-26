@@ -1,0 +1,9 @@
+../Core/Src/stm32_gpio.c:56:16:_gpio_init	64	static
+../Core/Src/stm32_gpio.c:193:9:stm32_gpio_get	32	static
+../Core/Src/stm32_gpio.c:235:9:stm32_gpio_get_optional	16	static
+../Core/Src/stm32_gpio.c:251:9:stm32_gpio_remove	16	static
+../Core/Src/stm32_gpio.c:266:9:stm32_gpio_direction_input	24	static
+../Core/Src/stm32_gpio.c:293:9:stm32_gpio_direction_output	24	static
+../Core/Src/stm32_gpio.c:325:9:stm32_gpio_get_direction	24	static
+../Core/Src/stm32_gpio.c:347:9:stm32_gpio_set_value	24	static
+../Core/Src/stm32_gpio.c:374:9:stm32_gpio_get_value	24	static
