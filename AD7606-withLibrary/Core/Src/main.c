@@ -193,7 +193,15 @@ int main(void)
 		  .range_ch[4] = ad7606_range,
 		  .range_ch[5] = ad7606_range,
 		  .range_ch[6] = ad7606_range,
-		  .range_ch[7] = ad7606_range
+		  .range_ch[7] = ad7606_range,
+		  .offset_ch[0] = 0,
+		  .offset_ch[1] = 0,
+		  .offset_ch[2] = 0,
+		  .offset_ch[3] = 0,
+		  .offset_ch[4] = 0,
+		  .offset_ch[5] = 0,
+		  .offset_ch[6] = 0,
+		  .offset_ch[7] = 0
   };
   /* USER CODE END 2 */
 
@@ -215,7 +223,7 @@ int main(void)
 	  float convertedData[8];
 	  for(int i=0; i<8; i++){
 	  	int complementTwo = twos_complement(adc_data[i], 16);
-	  	convertedData[i] = complementTwo*(5*2.5)/(32768*2);
+	  	convertedData[i] = complementTwo*(5*2.5)/(32768*5);  // cambiato denominatore da *2 a *5
 	  	char message_channel[60];
 	  	snprintf(message_channel, sizeof(message_channel), "%d,%f\n", i+1, convertedData[i]);
 	  	HAL_UART_Transmit(&huart2, (uint8_t *)message_channel, strlen(message_channel), HAL_MAX_DELAY);

@@ -5246,7 +5246,7 @@ int main(void)
  8002a36:	4618      	mov	r0, r3
  8002a38:	f000 fa20 	bl	8002e7c <twos_complement>
  8002a3c:	f8c7 01d8 	str.w	r0, [r7, #472]	@ 0x1d8
-	  	convertedData[i] = complementTwo*(5*2.5)/(32768*2);
+	  	convertedData[i] = complementTwo*(5*2.5)/(32768*5);  // cambiato denominatore da *2 a *5
  8002a40:	f8d7 01d8 	ldr.w	r0, [r7, #472]	@ 0x1d8
  8002a44:	f7fd fd76 	bl	8000534 <__aeabi_i2d>
  8002a48:	f04f 0200 	mov.w	r2, #0
@@ -5333,7 +5333,7 @@ int main(void)
  8002b0c:	0800d1bc 	.word	0x0800d1bc
  8002b10:	20000700 	.word	0x20000700
  8002b14:	40290000 	.word	0x40290000
- 8002b18:	40f00000 	.word	0x40f00000
+ 8002b18:	41040000 	.word	0x41040000
  8002b1c:	0800d19c 	.word	0x0800d19c
  8002b20:	20000688 	.word	0x20000688
 
