@@ -6,6 +6,7 @@ The Plant Station Monitoring System utilizes a combination of hardware and softw
 - Nucleo STM32
 - AD7606 Analog-to-Digital Converter
 - Raspberry Pi (serving as a gateway)
+
 Data collected from the sensors is processed and displayed using the following software tools:
 - Node-RED for data flow orchestration
 - InfluxDB for time-series data storage
