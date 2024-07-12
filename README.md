@@ -13,4 +13,4 @@ Data collected from the sensors is processed and displayed using the following s
 - Grafana for data visualization
 
 Here is a diagram illustrating the system architecture:
-![Plant Station Monitoring System Diagram](diagram.png)
+![Plant Station Monitoring System Diagram](https://github.com/GiuliaTitton/IoT_PlantMonitoring/blob/main/datasheet/Pictures/generalFlow.jpg)
